@@ -28,6 +28,7 @@ doc_markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True) \
 citats = config['citats']
 auth_id = config['authorized_ids']
 
+
 async def on_startup(x):
     print('Run')
     # asyncio.create_task(scheduler())
@@ -37,12 +38,28 @@ async def process_start_command(message: types.Message):
 
     text = f"ID: {message.from_user}"
 
+    if message.from_user.username == "Furianka":
 
-    await bot.send_message(
-        chat_id=message.from_user.id,
-        text=f"Чтобы сказал Доктор? Задайте вопрос или попробуйте узнать молча",
-        reply_markup=doc_markup
-    )
+        await bot.send_message(
+            chat_id=message.from_user.id,
+            text='— Они создали психопатку, чтобы она тебя убила. \n— А я на ней женился.',
+            reply_markup=doc_markup
+        )
+
+        await bot.send_message(
+            chat_id=message.from_user.id,
+            text=f"Хочешь еще узнать? Напиши вопрос или нажми на кнопку",
+            reply_markup=doc_markup
+        )
+
+
+    else:
+
+        await bot.send_message(
+            chat_id=message.from_user.id,
+            text=f"Чтобы сказал Доктор? Задайте вопрос или попробуйте узнать молча",
+            reply_markup=doc_markup
+        )
 
     await bot.send_message(
         chat_id=auth_id[0],
@@ -51,17 +68,17 @@ async def process_start_command(message: types.Message):
 
 @dp.message_handler(lambda message: True)
 async def process_start_command(message: types.Message):
-    citat_id = random.randint(0, 20)
-
-    await bot.send_message(
-        chat_id=auth_id[0],
-        text=f"{message.from_user.username}: "+message.text+"\n\n{citats[citat_id]}",
-        reply_markup=doc_markup
-    )
+    citat_id = random.randint(0, 31)
 
     await bot.send_message(
         chat_id=message.from_user.id,
         text=citats[citat_id]
+    )
+
+    await bot.send_message(
+        chat_id=auth_id[0],
+        text=f"{message.from_user.username}: "+message.text+f"\n\n{citats[citat_id]}",
+        reply_markup=doc_markup
     )
 
 if __name__ == '__main__':
